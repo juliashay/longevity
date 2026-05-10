@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVITY — A documentary film</title>
+<meta name="description" content="When science challenges death, what happens to life? A documentary feature by Tim Glinin and Anastasia Shubina.">
+<meta property="og:title" content="LONGEVITY — A documentary film">
+<meta property="og:description" content="When science challenges death, what happens to life?">
+<meta property="og:image" content="img/hero-molerats.jpg">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Instrument+Serif:ital,wght@0,400;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #0a0a0c;
+  --bg-elev:   #14141a;
+  --bg-card:   #16161c;
+  --ink:       #ece8e3;
+  --ink-soft:  #b9b5af;
+  --ink-mute:  #6f6c67;
+  --accent:    #ff6ec7;
+  --accent-2:  #b478ff;
+  --accent-glow: rgba(255, 110, 199, 0.45);
+  --line:      rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --max:       1480px;
+  --pad-x:     clamp(20px, 4vw, 56px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  font-weight: 400; font-size: 17px; line-height: 1.6;
+  letter-spacing: 0.005em; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--ink); text-decoration: none; transition: color .25s; }
+a:hover { color: var(--accent); }
+
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  opacity: 0.06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+::selection { background: var(--accent); color: #0a0a0c; }
+
+.display {
+  font-family: 'Big Shoulders Display', 'Manrope', sans-serif;
+  font-weight: 800; letter-spacing: -0.01em; line-height: 0.92; text-transform: uppercase;
+}
+.serif-italic {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic; font-weight: 400; letter-spacing: 0.01em;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--pad-x); z-index: 50;
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+  transition: background .35s, backdrop-filter .35s, border-color .35s;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(10,10,12,0.78); backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--line);
+}
+.nav .brand { font-weight: 800; font-family: 'Big Shoulders Display', sans-serif; font-size: 18px; letter-spacing: 0.16em; }
+.nav ul { list-style: none; display: flex; gap: 28px; padding: 0; margin: 0; }
+.nav ul a { color: var(--ink-soft); }
+.nav ul a:hover { color: var(--ink); }
+@media (max-width: 800px) { .nav ul { display: none; } }
+
+/* HERO */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 var(--pad-x) clamp(40px, 8vh, 100px);
+  overflow: hidden; isolation: isolate;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url("img/hero-molerats.jpg");
+  background-size: cover; background-position: center 85%;
+  z-index: -2; filter: saturate(1.1);
+  animation: heroZoom 24s ease-out forwards;
+}
+@keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1.0); } }
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(180,120,255,0.18) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(10,10,12,0.55) 0%, rgba(10,10,12,0.30) 35%, rgba(10,10,12,0.85) 80%, var(--bg) 100%);
+}
+.hero-meta {
+  display: flex; gap: 28px; flex-wrap: wrap;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 28px; font-weight: 500;
+}
+.hero-meta span { position: relative; }
+.hero-meta span:not(:last-child)::after {
+  content: ""; position: absolute; right: -16px; top: 50%;
+  width: 4px; height: 4px; background: var(--accent); border-radius: 50%; transform: translateY(-50%);
+}
+.hero-title {
+  font-size: clamp(72px, 16vw, 260px); margin: 0 0 24px;
+  background: linear-gradient(180deg, #fff 0%, #ffd6ee 45%, var(--accent) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: 0 0 60px rgba(255,110,199,0.25);
+}
+.hero-tagline { font-size: clamp(20px, 2.4vw, 32px); max-width: 720px; color: var(--ink); margin: 0 0 36px; line-height: 1.25; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 28px; border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink); transition: all .3s;
+  background: rgba(20,20,26,0.4); backdrop-filter: blur(8px);
+}
+.hero-cta:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 40px var(--accent-glow); }
+.hero-cta svg { transition: transform .3s; }
+.hero-cta:hover svg { transform: translateX(3px); }
+.scroll-indicator {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: 0.7;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.scroll-indicator::after {
+  content: ""; width: 1px; height: 32px;
+  background: linear-gradient(180deg, var(--ink-soft), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* COMMON */
+section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad-x); }
+.section-label {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 32px;
+}
+.section-label::before { content: ""; width: 28px; height: 1px; background: var(--accent); }
+.h2 { font-size: clamp(40px, 6vw, 88px); margin: 0 0 0.4em; letter-spacing: -0.015em; }
+.body-text { color: var(--ink-soft); font-size: 17px; line-height: 1.75; max-width: 64ch; }
+.body-text p + p { margin-top: 1.1em; }
+
+/* SYNOPSIS */
+.synopsis { background: linear-gradient(180deg, var(--bg) 0%, #0d0d11 100%); }
+.synopsis-grid {
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: clamp(40px, 6vw, 96px); align-items: start;
+}
+@media (max-width: 900px) { .synopsis-grid { grid-template-columns: 1fr; } }
+.synopsis-image {
+  position: sticky; top: 100px; border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 5;
+}
+.synopsis-image img { width: 100%; height: 100%; object-fit: cover; }
+.synopsis-image::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(10,10,12,0.6)); pointer-events: none;
+}
+
+/* QUOTE */
+.quote-block {
+  position: relative; padding: clamp(48px, 8vh, 100px) 0;
+  text-align: center; overflow: hidden;
+}
+.quote-block::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 600px; height: 600px; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,110,199,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.quote-block .quote-text {
+  font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
+  font-size: clamp(26px, 3.8vw, 54px); line-height: 1.28;
+  color: var(--ink); max-width: 18ch; margin: 0 auto; position: relative;
+}
+.quote-block .quote-text em { color: var(--accent); font-style: italic; }
+
+/* TEASER */
+.teaser-cinematic {
+  position: relative; padding: clamp(72px, 10vh, 120px) 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,110,199,0.12), transparent 42%),
+    linear-gradient(180deg, #08080a 0%, #0d0d11 100%);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden;
+}
+.teaser-cinematic::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,0.12) 100%);
+  pointer-events: none;
+}
+.teaser-cinematic-head {
+  position: relative; z-index: 1; max-width: var(--max);
+  margin: 0 auto clamp(28px, 4vw, 44px); padding: 0 var(--pad-x);
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+}
+.teaser-cinematic-copy p { max-width: 42ch; }
+.teaser-cinematic-player {
+  position: relative; z-index: 1; width: 100%; max-width: 1800px;
+  margin: 0 auto; aspect-ratio: 16 / 9; background: #000;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.45); overflow: hidden;
+}
+.teaser-cinematic-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.teaser-meta {
+  position: absolute; left: clamp(18px, 3vw, 42px); right: clamp(18px, 3vw, 42px);
+  bottom: clamp(18px, 3vw, 34px); display: flex; justify-content: space-between;
+  gap: 16px; align-items: end; pointer-events: none;
+}
+.teaser-meta-line {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(236,232,227,0.72); text-shadow: 0 2px 20px rgba(0,0,0,0.55);
+}
+@media (max-width: 900px) {
+  .teaser-cinematic-head { grid-template-columns: 1fr; }
+  .teaser-meta { flex-direction: column; align-items: flex-start; }
+}
+
+/* APPROACH (merged unique + visual) */
+.approach-section {
+  background: #0d0d11;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.approach-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px); align-items: end;
+  margin-bottom: clamp(40px, 6vh, 64px);
+}
+@media (max-width: 800px) { .approach-intro { grid-template-columns: 1fr; } }
+
+.approach-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; border: 1px solid var(--line);
+  margin-bottom: clamp(60px, 8vh, 100px);
+}
+.approach-item {
+  padding: clamp(28px, 3vw, 44px);
+  border-right: 1px solid var(--line);
+  position: relative; overflow: hidden; z-index: 1;
+}
+.approach-item .approach-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background-size: cover; background-position: center;
+  filter: grayscale(1) brightness(0.25); opacity: 0.4;
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+.approach-item:hover .approach-bg {
+  opacity: 0.7; filter: grayscale(0.6) brightness(0.45);
+}
+.approach-item:last-child { border-right: none; }
+.approach-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 12px; letter-spacing: 0.3em; font-weight: 500;
+  color: var(--accent); margin-bottom: 14px;
+}
+.approach-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: clamp(22px, 2.4vw, 34px);
+  text-transform: uppercase; line-height: 1.05;
+  margin: 0 0 14px; letter-spacing: -0.005em;
+}
+.approach-title em {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-weight: 400; text-transform: lowercase;
+  color: var(--accent); letter-spacing: 0;
+}
+.approach-desc { color: var(--ink-soft); font-size: 15px; line-height: 1.6; }
+@media (max-width: 800px) {
+  .approach-grid { grid-template-columns: 1fr; }
+  .approach-item { border-right: none; border-bottom: 1px solid var(--line); }
+  .approach-item:last-child { border-bottom: none; }
+}
+
+.approach-visual {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px); align-items: start;
+}
+@media (max-width: 800px) { .approach-visual { grid-template-columns: 1fr; } }
+
+/* FULLBLEED */
+.fullbleed {
+  position: relative; height: clamp(360px, 70vh, 720px);
+  overflow: hidden; margin: clamp(60px, 10vh, 120px) 0;
+}
+.fullbleed img { width: 100%; height: 100%; object-fit: cover; }
+.fullbleed-caption {
+  position: absolute; bottom: 32px; left: var(--pad-x); right: var(--pad-x);
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: clamp(20px, 2vw, 28px); max-width: 640px;
+  color: #fff; text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+}
+
+/* TEAM CAROUSEL */
+.team-carousel-wrap { position: relative; margin-top: clamp(50px, 8vh, 80px); }
+.team-carousel {
+  display: flex; gap: clamp(24px, 3vw, 40px);
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; padding-bottom: 8px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+.team-carousel::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+.team-slide {
+  flex: 0 0 clamp(280px, 28vw, 380px);
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+}
+.team-slide .team-photo {
+  aspect-ratio: 3 / 4; overflow: hidden; margin-bottom: 24px;
+  position: relative; background: var(--bg-card);
+}
+.team-slide .team-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1.2s ease, filter .6s; filter: grayscale(0.15);
+}
+.team-slide:hover .team-photo img { transform: scale(1.04); filter: grayscale(0); }
+.team-role {
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 6px;
+}
+.team-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-weight: 700; text-transform: uppercase;
+  margin: 0 0 12px; letter-spacing: -0.01em; line-height: 1;
+}
+.team-bio { color: var(--ink-soft); font-size: 15px; line-height: 1.6; }
+.team-bio p + p { margin-top: 0.8em; }
+
+.team-details-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 12px; padding: 8px 16px;
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-soft); background: transparent;
+  cursor: pointer; font-family: inherit; transition: all .3s;
+}
+.team-details-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.team-details-toggle .arrow { display: inline-block; transition: transform .3s; font-size: 9px; }
+.team-details-toggle.open .arrow { transform: rotate(180deg); }
+.team-details-content { max-height: 0; overflow: hidden; transition: max-height .5s ease, opacity .4s; opacity: 0; }
+.team-details-content.open { max-height: 600px; opacity: 1; }
+.team-details-inner { padding-top: 14px; }
+
+.carousel-nav { display: flex; gap: 8px; margin-top: 24px; }
+.carousel-btn {
+  width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 50%;
+  background: transparent; color: var(--ink-soft); cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s; font-family: inherit;
+}
+.carousel-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* IMPACT (text + image) */
+.impact { background: linear-gradient(180deg, #0d0d11 0%, var(--bg) 100%); }
+.impact-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 96px); align-items: center;
+}
+@media (max-width: 900px) { .impact-grid { grid-template-columns: 1fr; } }
+.impact-image {
+  border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 3;
+}
+.impact-image img { width: 100%; height: 100%; object-fit: cover; }
+
+/* EXPERTISE (text + image) */
+.expertise { background: linear-gradient(180deg, var(--bg) 0%, #0d0d11 100%); }
+.expertise-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 96px); align-items: center;
+}
+@media (max-width: 900px) { .expertise-grid { grid-template-columns: 1fr; } }
+.expertise-image {
+  border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 3; order: -1;
+}
+.expertise-image img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 900px) { .expertise-image { order: 0; } }
+
+/* CONNECT */
+.connect-section { background: #0d0d11; border-top: 1px solid var(--line); }
+.connect-forms {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: clamp(40px, 6vh, 64px);
+}
+@media (max-width: 800px) { .connect-forms { grid-template-columns: 1fr; } }
+
+.form-card {
+  border: 1px solid var(--line); padding: clamp(28px, 3vw, 44px);
+  background: var(--bg-card); position: relative; overflow: hidden;
+}
+.form-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.form-card h3 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: clamp(22px, 2.4vw, 32px);
+  text-transform: uppercase; margin: 0 0 6px; line-height: 1;
+}
+.form-card .form-subtitle {
+  color: var(--ink-soft); font-size: 14px; line-height: 1.55; margin-bottom: 24px;
+}
+
+form.cta-form { display: flex; flex-direction: column; gap: 14px; }
+.field { position: relative; border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
+.field input, .field textarea, .field select {
+  width: 100%; background: transparent; border: none; outline: none;
+  color: var(--ink); font-family: inherit; font-size: 15px; padding: 12px 0; resize: vertical;
+}
+.field select { -webkit-appearance: none; appearance: none; cursor: pointer; }
+.field select option { background: var(--bg-card); color: var(--ink); }
+.field label {
+  display: block; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--ink-mute); font-weight: 500;
+}
+.field:focus-within { border-bottom-color: var(--accent); }
+.field:focus-within label { color: var(--accent); }
+.btn {
+  align-self: flex-start; margin-top: 12px; padding: 14px 28px;
+  background: var(--accent); color: #0a0a0c; border: none;
+  font-family: inherit; font-weight: 700;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  cursor: pointer; transition: all .3s;
+}
+.btn:hover { background: #fff; box-shadow: 0 0 40px var(--accent-glow); }
+
+/* PARTNERS (bottom) */
+.partners-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px; margin-top: clamp(40px, 6vh, 60px);
+}
+.partner {
+  border: 1px solid var(--line); padding: 36px 28px; text-align: center;
+  transition: border-color .3s, background .3s;
+}
+.partner:hover { border-color: var(--accent); background: rgba(255,110,199,0.04); }
+.partner-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; text-transform: uppercase; font-size: 22px;
+  letter-spacing: 0.02em; margin: 0 0 8px;
+}
+.partner-desc { color: var(--ink-soft); font-size: 13px; letter-spacing: 0.06em; }
+
+/* FOOTER */
+footer {
+  padding: 60px var(--pad-x) 40px; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
+  font-size: 13px; color: var(--ink-mute);
+}
+@media (max-width: 800px) { footer { grid-template-columns: 1fr; } }
+footer .foot-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: 20px; text-transform: uppercase;
+  color: var(--ink); letter-spacing: 0.06em; margin-bottom: 12px;
+}
+footer a { color: var(--ink-soft); }
+
+/* EDIT MODE */
+.edit-fab { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; gap: 10px; }
+.edit-fab button {
+  background: var(--bg-elev); color: var(--ink); border: 1px solid var(--line-strong);
+  padding: 12px 20px; font-family: inherit; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600;
+  cursor: pointer; border-radius: 999px; transition: all .25s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.edit-fab button:hover { border-color: var(--accent); color: var(--accent); }
+.edit-fab button.primary { background: var(--accent); color: #0a0a0c; border-color: var(--accent); }
+.edit-fab button.primary:hover { background: #fff; color: #0a0a0c; }
+.edit-fab .hidden { display: none; }
+body.editing [data-editable] { outline: 1px dashed rgba(255,110,199,0.5); outline-offset: 4px; cursor: text; }
+body.editing [data-editable]:hover { outline-color: var(--accent); background: rgba(255,110,199,0.04); }
+body.editing [data-editable]:focus { outline: 2px solid var(--accent); outline-offset: 4px; background: rgba(255,110,199,0.06); }
+.edit-banner {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: var(--accent); color: #0a0a0c; padding: 12px var(--pad-x);
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 600; text-align: center; z-index: 199; display: none;
+}
+body.editing .edit-banner { display: block; }
+body.editing { padding-top: 44px; }
+body.editing .nav { top: 44px; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s, transform 1s; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body class="">
+
+<div class="edit-banner">Edit mode is on — click any text to change it. Then download the updated site.</div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <div class="brand" data-editable="">LONGEVITY</div>
+  <ul>
+    <li><a href="#film">The Film</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ 1. HERO ═══════════════ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap" style="width:100%;">
+    <div class="hero-meta">
+      <span data-editable="">Documentary Feature</span>
+      <span data-editable="">90 min · In development</span>
+      <span data-editable="">USA · 2027</span>
+    </div>
+    <h1 class="display hero-title" data-editable="">Longevity</h1>
+    <p class="hero-tagline serif-italic" data-editable="">When science challenges death, what happens to life?</p>
+    <a class="hero-cta" href="#teaser" data-editable-attr="href">
+      <span data-editable="">Watch the teaser</span>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </a>
+  </div>
+  <div class="scroll-indicator"><span>Scroll</span></div>
+</header>
+
+<!-- ═══════════════ 2. SYNOPSIS ═══════════════ -->
+<section class="synopsis" id="film">
+  <div class="wrap">
+    <div class="synopsis-grid">
+      <div class="synopsis-image reveal">
+        <img src="img/gloved-hand.jpg" alt="Naked mole rat held by a researcher">
+      </div>
+      <div class="reveal">
+        <div class="section-label" data-editable="">Synopsis</div>
+        <h2 class="display h2" data-editable="">Revolution in Aging Research</h2>
+        <div class="body-text">
+          <p data-editable="">Across California — from Silicon Valley garages to cutting-edge university labs — scientists are working on a prominent question: can we slow down, stop, or even reverse aging?</p>
+          <p data-editable="">We follow the researchers, entrepreneurs, and dreamers racing to crack this problem. They're testing every approach from regenerating organs to using AI to understand biological data. Along the way, we meet living creatures that seem to have figured it out already — species that simply don't age.</p>
+          <p data-editable="">Told through the eyes of biologists and filmmakers, this is a scientific journey which reshape the future, the human body, everyday life, and the experience of being human.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. QUOTE + IMMERSIVE FIRST LOOK ═══════════════ -->
+<div class="quote-block" style="background: linear-gradient(180deg, #0d0d11 0%, #08080a 50%, #0d0d11 100%);">
+  <div class="wrap reveal">
+    <p class="quote-text" data-editable="">If we could intervene in aging itself — would it change what it means to <em>be alive?</em></p>
+  </div>
+</div>
+
+<!-- ═══════════════ 4. TEASER ═══════════════ -->
+<section class="teaser-cinematic" id="teaser">
+  <div class="teaser-cinematic-head reveal">
+    <div class="teaser-cinematic-copy">
+      <div class="section-label" data-editable="">TEASER</div>
+    </div>
+  </div>
+  <div class="teaser-cinematic-player reveal">
+    <iframe src="https://player.vimeo.com/video/1189267806?h=bda0ca8db4&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" title="Longevity teaser" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+    <div class="teaser-meta">
+      <div class="teaser-meta-line" data-editable="">Documentary teaser · Vimeo private link</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 5. ARTISTIC APPROACH (merged: unique + visual) ═══════════════ -->
+<section class="approach-section" id="approach">
+  <div class="wrap">
+    <div class="approach-intro reveal">
+      <div>
+        <div class="section-label" data-editable="">Artistic Approach</div>
+        <h2 class="display h2" data-editable="">An immersive documentary</h2>
+      </div>
+      <div>
+        <p class="body-text" data-editable="">The first documentary to capture pioneering longevity experiments from the inside. We are combining rare scientific access with an artistic vision that transforms biology into a cinematic experience.</p>
+        <p class="body-text" style="margin-top: 1em;" data-editable="">The aesthetic oscillates between luminescent cellular forms, the rhythms of ageless creatures, and the precision of human biotechnology.</p>
+      </div>
+    </div>
+
+    <div class="approach-grid reveal">
+      <div class="approach-item">
+        <div class="approach-bg" style="background-image: url('img/23.jpg');"></div>
+        <div class="approach-num" data-editable="">01</div>
+        <h3 class="approach-title"><span data-editable="">Real-Time</span> <em data-editable="">experiments</em></h3>
+        <p class="approach-desc" data-editable="">Groundbreaking science filmed as it unfolds — cryopreservation, parabiosis, genome editing — captured on camera for the first time. No reconstructions. Science as high-stakes action.</p>
+      </div>
+      <div class="approach-item">
+        <div class="approach-bg" style="background-image: url('img/01.jpg');"></div>
+        <div class="approach-num" data-editable="">02</div>
+        <h3 class="approach-title"><span data-editable="">Science</span> <em data-editable="">as art</em></h3>
+        <p class="approach-desc" data-editable="">Fluorescent cells, translucent embryos, luminescent organisms. Complex biology transformed into poetic imagery — Koyaanisqatsi meets the science of aging. A meditative visual experience.</p>
+      </div>
+      <div class="approach-item">
+        <div class="approach-bg" style="background-image: url('img/09.jpg');"></div>
+        <div class="approach-num" data-editable="">03</div>
+        <h3 class="approach-title"><span data-editable="">Leading</span> <em data-editable="">scientists</em></h3>
+        <p class="approach-desc" data-editable="">Embedded with foremost gerontologists at Stanford, UCSF, and beyond. Access secured over years to labs that have never opened their doors to a film crew.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ 7. TEAM CAROUSEL ═══════════════ -->
+<section id="team">
+  <div class="wrap">
+    <div class="reveal" style="max-width:760px;">
+      <div class="section-label" data-editable="">Team</div>
+      <h2 class="display h2" data-editable="">Outstanding Filmmakers &amp; Biologists</h2>
+    </div>
+
+    <div class="team-carousel-wrap reveal">
+      <div class="team-carousel" id="teamCarousel">
+
+        <div class="team-slide">
+          <div class="team-photo"><img src="img/directors.jpg" alt="Anastasia Shubina and Tim Glinin"></div>
+          <div class="team-role" data-editable="">Directors</div>
+          <h3 class="team-name" data-editable="">Anastasia Shubina &amp; Tim Glinin</h3>
+          <div class="team-bio">
+            <p data-editable="">Award-winning duo based in San Francisco. Tim holds a PhD in Genetics; Anastasia holds Master's in Biology and Philosophy. They work at the intersection of documentary film and contemporary science.</p>
+          </div>
+          <button class="team-details-toggle" onclick="toggleDetails(this)">
+            <span>Filmography</span> <span class="arrow">&#9660;</span>
+          </button>
+          <div class="team-details-content">
+            <div class="team-details-inner team-bio">
+              <p>100+ exhibitions: Centre Pompidou, Mus&eacute;e du Quai Branly, McCord Stewart Museum. Films at Sheffield DocFest, Cin&eacute;ma du R&eacute;el (Special Prize), Trento (Special Mention).</p>
+              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">Haqiqa (2026, WIP) &middot; Piblokto (2023, 19 awards) &middot; The Art of Falling Apart (2019)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-photo"><img src="img/producer.jpg" alt="Ksenia Gapchenko"></div>
+          <div class="team-role" data-editable="">Producer</div>
+          <h3 class="team-name" data-editable="">Ksenia Gapchenko</h3>
+          <div class="team-bio">
+            <p data-editable="">Berlin-based producer, European Film Academy member. Nipkow Workshop fellow (2022/23). Over a decade of experience in impactful documentary storytelling.</p>
+          </div>
+          <button class="team-details-toggle" onclick="toggleDetails(this)">
+            <span>Filmography</span> <span class="arrow">&#9660;</span>
+          </button>
+          <div class="team-details-content">
+            <div class="team-details-inner team-bio">
+              <p><em>How to Save a Dead Friend</em> (2022) — Cannes L'ACID, DOC NYC Grand Prix, EFA Nomination. Eurodoc, Ex Oriente, IDFA Forum.</p>
+              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">AMOOSED: A Moose Odyssey (2025) &middot; How to Save a Dead Friend (2022)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-photo" style="background: var(--bg-card);">
+            <img src="img/batin.jpg" alt="Michael Batin" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
+          </div>
+          <div class="team-role" data-editable="">Scientific Advisor</div>
+          <h3 class="team-name" data-editable="">Michael Batin</h3>
+          <div class="team-bio">
+            <p data-editable="">President of Open Longevity, a California-based research nonprofit. A key figure in the longevity community, bridging scientific research and public engagement through open clinical trials.</p>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-photo" style="background: var(--bg-card);">
+            <img src="img/wong.jpg" alt="Harrison Wong" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
+          </div>
+          <div class="team-role" data-editable="">Director of Photography</div>
+          <h3 class="team-name" data-editable="">Harrison Wong</h3>
+          <div class="team-bio">
+            <p data-editable="">USA-based cinematographer whose credits include Amazon Prime's Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Meta. Mentored by acclaimed cinematographer Robert McLachlan.</p>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-photo" style="background: var(--bg-card);">
+            <img src="img/shaykhutdinova.jpg" alt="Julia Shaykhutdinova" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
+          </div>
+          <div class="team-role" data-editable="">Public Outreach</div>
+          <h3 class="team-name" data-editable="">Julia Shaykhutdinova</h3>
+          <div class="team-bio">
+            <p data-editable="">Experienced executive producer specializing in complex documentary productions. Strategic oversight ensuring the film's ambitious vision is realized at the highest level of quality.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="scrollCarousel(-1)" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn" onclick="scrollCarousel(1)" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FULLBLEED — MOLE RATS ═══════════════ -->
+<div class="fullbleed reveal">
+  <img src="img/02.jpg" alt="Naked mole rats under purple light">
+  <div class="fullbleed-caption" data-editable="">Whales, jellyfish, naked mole rats — natural models of resilience that have already mastered the art of sustained vitality.</div>
+</div>
+
+<!-- ═══════════════ 8. IMPACT ═══════════════ -->
+<section class="impact" id="mission">
+  <div class="wrap">
+    <div class="impact-grid reveal">
+      <div>
+        <div class="section-label" data-editable="">Our Mission</div>
+        <h2 class="display h2" data-editable="">Redefine aging for society</h2>
+        <div class="body-text">
+          <p data-editable="">We believe the science of longevity is one of the defining stories of our time — yet it remains largely invisible to the public. Our mission is to bring this field out of the laboratory: to spark an honest, informed conversation. What does it mean to extend human life? Who gets access to these technologies?</p>
+          <p data-editable="">Through art, science, and storytelling, <em>Longevity</em> aims to become a bridge between researchers and the public — making the complexity of aging science accessible without simplifying it, and raising the ethical and political questions that this revolution demands.</p>
+        </div>
+      </div>
+      <div class="impact-image">
+        <img src="img/red-molerat.jpg" alt="Longevity research">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FULLBLEED — CRYOPRESERVATION ═══════════════ -->
+<div class="fullbleed reveal">
+  <img src="img/09.jpg" alt="Organ cryopreservation in laboratory">
+  <div class="fullbleed-caption" data-editable="">"A kidney loses color, becomes translucent, suspended between states neither alive nor dead. Then it is transplanted back, regains color, fills with blood, and returns to life."</div>
+</div>
+
+<!-- ═══════════════ 11. CONNECT (merged) ═══════════════ -->
+<section class="connect-section" id="connect">
+  <div class="wrap">
+    <div class="reveal" style="max-width:760px; margin-bottom: clamp(40px, 6vh, 64px);">
+      <div class="section-label" data-editable="">Get Involved</div>
+      <h2 class="display h2" data-editable="">Stay connected<br>Become part of the story</h2>
+      <p class="body-text" data-editable="">Reach out for press inquiries, screening requests, or collaboration opportunities. We are seeking scientists, research institutions, and sponsors who share our vision.</p>
+      <p class="body-text" style="margin-top: 20px;">
+        <strong style="color: var(--ink);">Email · </strong><a href="mailto:hello@longevity-film.com" data-editable="" data-editable-attr="href">hello@longevity-film.com</a><br>
+        <strong style="color: var(--ink);">Production · </strong><span data-editable="">Singularity Films, Foster City, California</span>
+      </p>
+    </div>
+
+    <div class="connect-forms reveal">
+      <div class="form-card">
+        <h3 data-editable="">For Researchers</h3>
+        <p class="form-subtitle" data-editable="">Working in aging, longevity, or regenerative medicine? Share your work, open your lab, and help bring this science to a wider audience.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); alert('Thank you for your interest! We will be in touch shortly.'); this.reset();">
+          <div class="field"><label>Full Name</label><input type="text" required=""></div>
+          <div class="field"><label>Email</label><input type="email" required=""></div>
+          <div class="field"><label>Institution / Lab</label><input type="text" required=""></div>
+          <div class="field"><label>Area of Research</label><input type="text" placeholder="e.g. gerontology, regenerative medicine..."></div>
+          <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
+          <button class="btn" type="submit" data-editable="">Apply as Researcher</button>
+        </form>
+      </div>
+
+      <div class="form-card">
+        <h3 data-editable="">For Sponsors</h3>
+        <p class="form-subtitle" data-editable="">Support a documentary that brings longevity science to global audiences. Opportunities for individuals, foundations, and organizations.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); alert('Thank you for your interest in sponsoring Longevity! We will be in touch shortly.'); this.reset();">
+          <div class="field"><label>Full Name</label><input type="text" required=""></div>
+          <div class="field"><label>Email</label><input type="email" required=""></div>
+          <div class="field"><label>Organization (optional)</label><input type="text"></div>
+          <div class="field">
+            <label>Type of Support</label>
+            <select>
+              <option value="">Select...</option>
+              <option value="financial">Financial sponsorship</option>
+              <option value="in-kind">In-kind support</option>
+              <option value="distribution">Distribution partnership</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
+          <button class="btn" type="submit" data-editable="">Become a Sponsor</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 12. PRODUCED BY + FOOTER ═══════════════ -->
+<section style="position: relative; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div style="position: absolute; inset: 0; z-index: 0; background-image: url('img/08.jpg'); background-size: cover; background-position: center; filter: grayscale(1) brightness(0.12) invert(1); opacity: 0.35;"></div>
+  <div style="position: relative; z-index: 1;" class="wrap">
+    <div class="reveal" style="text-align: center; max-width: 760px; margin: 0 auto;">
+      <div class="section-label" style="display:inline-flex; justify-content:center;" data-editable="">Production &amp; Support</div>
+      <h2 class="display h2" data-editable="">Produced by Singularity</h2>
+      <p class="body-text" style="margin: 0 auto;" data-editable="">A young California-based production company specializing in films about science, anthropology, and ethnographic projects. Based in Foster City, CA.</p>
+    </div>
+    <div class="partners-grid reveal">
+      <div class="partner">
+        <div class="partner-name" data-editable="">Singularity</div>
+        <div class="partner-desc" data-editable="">Production company · Foster City, CA</div>
+      </div>
+      <div class="partner">
+        <div class="partner-name" data-editable="">Open Longevity</div>
+        <div class="partner-desc" data-editable="">Research nonprofit · California</div>
+      </div>
+      <div class="partner">
+        <div class="partner-name" data-editable="">BAVC Media</div>
+        <div class="partner-desc" data-editable="">Bay Area Video Coalition</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="foot-title" data-editable="">Longevity</div>
+    <div data-editable="">A documentary feature in development. &copy; 2026 Singularity Films. All rights reserved.</div>
+  </div>
+  <div>
+    <div class="foot-title" data-editable="">Follow</div>
+    <div>
+      <a href="#" data-editable="" data-editable-attr="href">Instagram</a> · 
+      <a href="#" data-editable="" data-editable-attr="href">Vimeo</a> · 
+      <a href="#" data-editable="" data-editable-attr="href">Letterboxd</a>
+    </div>
+  </div>
+  <div>
+    <div class="foot-title" data-editable="">Press kit</div>
+    <div><a href="#" data-editable="" data-editable-attr="href">Download PDF (10 pages)</a></div>
+  </div>
+</footer>
+
+<!-- EDIT MODE FAB -->
+<div class="edit-fab" id="editFab">
+  <button id="editToggle" class="hidden">&#9998; <span>Edit content</span></button>
+  <button id="downloadBtn" class="primary">&darr; <span>Download HTML</span></button>
+  <button id="exitBtn" class=""><span>Done</span></button>
+</div>
+
+<script>
+(function() {
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 30);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+(function() {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+function toggleDetails(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+function scrollCarousel(dir) {
+  const c = document.getElementById('teamCarousel');
+  const slide = c.querySelector('.team-slide');
+  const w = slide.offsetWidth + parseInt(getComputedStyle(c).gap);
+  c.scrollBy({ left: dir * w, behavior: 'smooth' });
+}
+
+(function() {
+  const toggle = document.getElementById('editToggle');
+  const download = document.getElementById('downloadBtn');
+  const exitBtn = document.getElementById('exitBtn');
+  let editing = false;
+  function setEditing(on) {
+    editing = on;
+    document.body.classList.toggle('editing', on);
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.contentEditable = on ? 'true' : 'false'; el.spellcheck = on;
+    });
+    toggle.classList.toggle('hidden', on);
+    download.classList.toggle('hidden', !on);
+    exitBtn.classList.toggle('hidden', !on);
+  }
+  toggle.addEventListener('click', () => setEditing(true));
+  exitBtn.addEventListener('click', () => setEditing(false));
+  download.addEventListener('click', () => {
+    document.activeElement && document.activeElement.blur();
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    clone.querySelectorAll('[spellcheck]').forEach(el => el.removeAttribute('spellcheck'));
+    const b = clone.querySelector('body'); if (b) b.classList.remove('editing');
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'index.html';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 200);
+  });
+  window.addEventListener('keydown', (e) => {
+    if (editing && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); download.click(); }
+    if (editing && e.key === 'Escape') setEditing(false);
+  });
+})();
+</script>
+
+</body></html>
