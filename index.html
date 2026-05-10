@@ -62,7 +62,7 @@ body::before {
 /* NAV */
 .nav {
   position: fixed; top: 0; left: 0; right: 0;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: center;
   padding: 18px var(--pad-x); z-index: 50;
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
   transition: background .35s, backdrop-filter .35s, border-color .35s;
@@ -72,17 +72,21 @@ body::before {
   background: rgba(10,10,12,0.78); backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--line);
 }
-.nav .brand { font-weight: 800; font-family: 'Big Shoulders Display', sans-serif; font-size: 18px; letter-spacing: 0.16em; }
+.nav .brand { display: none; }
 .nav ul { list-style: none; display: flex; gap: 28px; padding: 0; margin: 0; }
 .nav ul a { color: var(--ink-soft); }
 .nav ul a:hover { color: var(--ink); }
 @media (max-width: 800px) { .nav ul { display: none; } }
+@media (max-width: 700px) {
+  .hero-info-row { flex-direction: column; gap: 16px; }
+  .hero-meta { text-align: left; }
+}
 
 /* HERO */
 .hero {
   position: relative; min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 var(--pad-x) clamp(40px, 8vh, 100px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 var(--pad-x);
   overflow: hidden; isolation: isolate;
 }
 .hero-bg {
@@ -100,28 +104,35 @@ body::before {
     linear-gradient(180deg, rgba(10,10,12,0.55) 0%, rgba(10,10,12,0.30) 35%, rgba(10,10,12,0.85) 80%, var(--bg) 100%);
 }
 .hero-meta {
-  display: flex; gap: 28px; flex-wrap: wrap;
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--ink-soft); margin-bottom: 28px; font-weight: 500;
+  display: flex; gap: 8px; flex-direction: column;
+  font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 500; text-align: right;
 }
 .hero-meta span { position: relative; }
-.hero-meta span:not(:last-child)::after {
-  content: ""; position: absolute; right: -16px; top: 50%;
-  width: 4px; height: 4px; background: var(--accent); border-radius: 50%; transform: translateY(-50%);
+.hero-meta span:not(:last-child)::after { display: none; }
+.hero-info-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 40px; margin-top: 12px; flex-wrap: wrap;
 }
 .hero-title {
-  font-size: clamp(72px, 16vw, 260px); margin: 0 0 24px;
+  font-size: clamp(72px, 16vw, 260px); margin: 0 0 0;
   background: linear-gradient(180deg, #fff 0%, #ffd6ee 45%, var(--accent) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   text-shadow: 0 0 60px rgba(255,110,199,0.25);
 }
-.hero-tagline { font-size: clamp(20px, 2.4vw, 32px); max-width: 720px; color: var(--ink); margin: 0 0 36px; line-height: 1.25; }
+.hero-tagline {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-style: normal; font-weight: 500;
+  font-size: clamp(14px, 1.6vw, 20px); max-width: 420px; color: var(--accent);
+  margin: 0; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.08em;
+}
 .hero-cta {
   display: inline-flex; align-items: center; gap: 12px;
-  padding: 16px 28px; border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 16px 28px; border: 1px solid var(--accent); border-radius: 999px;
   font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
   font-weight: 600; color: var(--ink); transition: all .3s;
   background: rgba(20,20,26,0.4); backdrop-filter: blur(8px);
+  margin-top: 36px;
 }
 .hero-cta:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 40px var(--accent-glow); }
 .hero-cta svg { transition: transform .3s; }
@@ -161,7 +172,9 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
   display: grid; grid-template-columns: 1fr 1.4fr;
   gap: clamp(40px, 6vw, 96px); align-items: start;
 }
-@media (max-width: 900px) { .synopsis-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .synopsis-grid { grid-template-columns: 1fr; }
+  .synopsis-image { position: relative; top: auto; }
+}
 .synopsis-image {
   position: sticky; top: 100px; border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 5;
 }
@@ -520,15 +533,16 @@ body.editing .nav { top: 44px; }
 <header class="hero">
   <div class="hero-bg"></div>
   <div class="wrap" style="width:100%;">
-    <div class="hero-meta">
-      <span data-editable="">Documentary Feature</span>
-      <span data-editable="">90 min · In development</span>
-      <span data-editable="">USA · 2027</span>
-    </div>
     <h1 class="display hero-title" data-editable="">Longevity</h1>
-    <p class="hero-tagline serif-italic" data-editable="">When science challenges death, what happens to life?</p>
+    <div class="hero-info-row">
+      <p class="hero-tagline" data-editable="">When science challenges death, what happens to life?</p>
+      <div class="hero-meta">
+        <span data-editable="">Documentary Feature · 90 Min</span>
+        <span data-editable="">In Development · USA 2027</span>
+      </div>
+    </div>
     <a class="hero-cta" href="#teaser" data-editable-attr="href">
-      <span data-editable="">Watch the teaser</span>
+      <span data-editable="">Watch Teaser</span>
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </a>
   </div>
@@ -834,9 +848,8 @@ body.editing .nav { top: 44px; }
 
 <!-- EDIT MODE FAB -->
 <div class="edit-fab" id="editFab">
-  <button id="editToggle" class="hidden">&#9998; <span>Edit content</span></button>
-  <button id="downloadBtn" class="primary">&darr; <span>Download HTML</span></button>
-  <button id="exitBtn" class=""><span>Done</span></button>
+  <button id="editToggle" class="">&#9998; <span>Edit content</span></button>
+  <button id="exitBtn" class="hidden"><span>Done</span></button>
 </div>
 
 <script>
@@ -875,7 +888,6 @@ function scrollCarousel(dir) {
 
 (function() {
   const toggle = document.getElementById('editToggle');
-  const download = document.getElementById('downloadBtn');
   const exitBtn = document.getElementById('exitBtn');
   let editing = false;
   function setEditing(on) {
@@ -885,27 +897,11 @@ function scrollCarousel(dir) {
       el.contentEditable = on ? 'true' : 'false'; el.spellcheck = on;
     });
     toggle.classList.toggle('hidden', on);
-    download.classList.toggle('hidden', !on);
     exitBtn.classList.toggle('hidden', !on);
   }
   toggle.addEventListener('click', () => setEditing(true));
   exitBtn.addEventListener('click', () => setEditing(false));
-  download.addEventListener('click', () => {
-    document.activeElement && document.activeElement.blur();
-    const clone = document.documentElement.cloneNode(true);
-    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-    clone.querySelectorAll('[spellcheck]').forEach(el => el.removeAttribute('spellcheck'));
-    const b = clone.querySelector('body'); if (b) b.classList.remove('editing');
-    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'index.html';
-    document.body.appendChild(a); a.click();
-    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 200);
-  });
   window.addEventListener('keydown', (e) => {
-    if (editing && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); download.click(); }
     if (editing && e.key === 'Escape') setEditing(false);
   });
 })();
