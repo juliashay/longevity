@@ -79,7 +79,7 @@ body::before {
 @media (max-width: 800px) { .nav ul { display: none; } }
 @media (max-width: 700px) {
   .hero-info-row { flex-direction: column; gap: 16px; }
-  .hero-meta { text-align: left; align-items: flex-start; }
+  .hero-meta { text-align: left; }
 }
 
 /* HERO */
@@ -172,6 +172,9 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
   display: grid; grid-template-columns: 1fr 1.4fr;
   gap: clamp(40px, 6vw, 96px); align-items: start;
 }
+@media (max-width: 900px) { .synopsis-grid { grid-template-columns: 1fr; }
+  .synopsis-image { position: relative; top: auto; }
+}
 .synopsis-image {
   position: sticky; top: 100px; border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 5;
 }
@@ -179,10 +182,6 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 .synopsis-image::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, transparent 60%, rgba(10,10,12,0.6)); pointer-events: none;
-}
-@media (max-width: 900px) {
-  .synopsis-grid { grid-template-columns: 1fr; }
-  .synopsis-image { position: relative; top: auto; aspect-ratio: 3 / 4; }
 }
 
 /* QUOTE */
@@ -193,19 +192,15 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 .quote-block::before {
   content: ""; position: absolute; top: 50%; left: 50%;
   width: 600px; height: 600px; transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255,110,199,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,110,199,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 .quote-block .quote-text {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-style: italic; font-weight: 400; letter-spacing: 0.01em;
-  font-size: clamp(28px, 4vw, 56px); line-height: 1.25;
-  color: var(--ink); max-width: 20ch; margin: 0 auto; position: relative;
+  font-family: 'Instrument Serif', Georgia, serif; font-style: italic;
+  font-size: clamp(26px, 3.8vw, 54px); line-height: 1.28;
+  color: var(--ink); max-width: 18ch; margin: 0 auto; position: relative;
 }
-.quote-block .quote-text em {
-  font-style: italic;
-  color: var(--accent);
-}
+.quote-block .quote-text em { color: var(--accent); font-style: italic; }
 
 /* TEASER */
 .teaser-cinematic {
@@ -343,7 +338,6 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 1.2s ease, filter .6s; filter: grayscale(0.15);
 }
-.team-slide .team-photo a { display: block; width: 100%; height: 100%; }
 .team-slide:hover .team-photo img { transform: scale(1.04); filter: grayscale(0); }
 .team-role {
   font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
@@ -355,7 +349,7 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
   font-weight: 700; text-transform: uppercase;
   margin: 0 0 12px; letter-spacing: -0.01em; line-height: 1;
 }
-.team-bio { color: var(--ink-soft); font-size: 15px; line-height: 1.6; flex: 1; }
+.team-bio { color: var(--ink-soft); font-size: 15px; line-height: 1.6; }
 .team-bio p + p { margin-top: 0.8em; }
 
 .team-details-toggle {
@@ -430,9 +424,6 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 .form-card .form-subtitle {
   color: var(--ink-soft); font-size: 14px; line-height: 1.55; margin-bottom: 24px;
 }
-.form-card .form-subtitle + .form-cta-line {
-  margin-top: -16px;
-}
 
 form.cta-form { display: flex; flex-direction: column; gap: 14px; }
 .field { position: relative; border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
@@ -488,21 +479,31 @@ footer .foot-title {
 }
 footer a { color: var(--ink-soft); }
 
-/* FLOATING DONATE BUTTON — bottom-left, Replace '#' href with PayPal URL */
-.donate-float {
-  position: fixed; bottom: 24px; right: 24px; z-index: 190;
-}
-.donate-float a {
+/* EDIT MODE */
+.edit-fab { position: fixed; bottom: 24px; right: 24px; z-index: 200; display: flex; gap: 10px; }
+.edit-fab button {
+  background: var(--bg-elev); color: var(--ink); border: 1px solid var(--line-strong);
+  padding: 12px 20px; font-family: inherit; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600;
+  cursor: pointer; border-radius: 999px; transition: all .25s;
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 24px; background: var(--accent); color: #0a0a0c;
-  border: none; border-radius: 999px;
-  font-family: inherit; font-size: 11px; letter-spacing: 0.22em;
-  text-transform: uppercase; font-weight: 700; cursor: pointer;
-  transition: all .3s; text-decoration: none;
-  box-shadow: 0 4px 24px rgba(255,110,199,0.35);
 }
-.donate-float a:hover { background: #fff; color: #0a0a0c; box-shadow: 0 4px 40px var(--accent-glow); }
-.donate-float a svg { flex-shrink: 0; }
+.edit-fab button:hover { border-color: var(--accent); color: var(--accent); }
+.edit-fab button.primary { background: var(--accent); color: #0a0a0c; border-color: var(--accent); }
+.edit-fab button.primary:hover { background: #fff; color: #0a0a0c; }
+.edit-fab .hidden { display: none; }
+body.editing [data-editable] { outline: 1px dashed rgba(255,110,199,0.5); outline-offset: 4px; cursor: text; }
+body.editing [data-editable]:hover { outline-color: var(--accent); background: rgba(255,110,199,0.04); }
+body.editing [data-editable]:focus { outline: 2px solid var(--accent); outline-offset: 4px; background: rgba(255,110,199,0.06); }
+.edit-banner {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: var(--accent); color: #0a0a0c; padding: 12px var(--pad-x);
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 600; text-align: center; z-index: 199; display: none;
+}
+body.editing .edit-banner { display: block; }
+body.editing { padding-top: 44px; }
+body.editing .nav { top: 44px; }
 
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s, transform 1s; }
@@ -514,6 +515,8 @@ footer a { color: var(--ink-soft); }
 </style>
 </head>
 <body class="">
+
+<div class="edit-banner">Edit mode is on — click any text to change it. Then download the updated site.</div>
 
 <!-- NAV -->
 <nav class="nav scrolled" id="nav">
@@ -557,9 +560,9 @@ footer a { color: var(--ink-soft); }
         <div class="section-label" data-editable="">Synopsis</div>
         <h2 class="display h2" data-editable="">Revolution in Aging Research</h2>
         <div class="body-text">
-          <p data-editable="">Across California — from Silicon Valley garages to leading university labs — scientists at the forefront of longevity research are developing radically different ways to extend human life, from regenerative medicine and organ preservation to AI-driven biology and personalized medicine.</p>
-          <p data-editable="">Moving between laboratories, experimental systems, and encounters with organisms that seem to escape aging — naked mole rats, whales, jellyfish — the film unfolds as both a journey through contemporary science and a sensory, immersive experience.</p>
-          <p data-editable="">Told through the eyes of biologist-filmmakers, the film examines how these scientific developments and emerging therapies may reshape the human body, everyday life, and the experience of being human — and what kind of future they may create.</p>
+          <p data-editable="">Across California — from Silicon Valley garages to cutting-edge university labs — scientists are working on a prominent question: can we slow down, stop, or even reverse aging?</p>
+          <p data-editable="">We follow the researchers, entrepreneurs, and dreamers racing to crack this problem. They're testing every approach from regenerating organs to using AI to understand biological data. Along the way, we meet living creatures that seem to have figured it out already — species that simply don't age.</p>
+          <p data-editable="">Told through the eyes of biologists and filmmakers, this is a scientific journey which reshape the future, the human body, everyday life, and the experience of being human.</p>
         </div>
       </div>
     </div>
@@ -569,7 +572,7 @@ footer a { color: var(--ink-soft); }
 <!-- ═══════════════ 3. QUOTE + IMMERSIVE FIRST LOOK ═══════════════ -->
 <div class="quote-block" style="background: linear-gradient(180deg, #0d0d11 0%, #08080a 50%, #0d0d11 100%);">
   <div class="wrap reveal">
-    <p class="quote-text" data-editable="">A <em>cinematic</em> exploration of humanity's most radical scientific <em>revolution</em></p>
+    <p class="quote-text" data-editable="">If we could intervene in aging itself — would it change what it means to <em>be alive?</em></p>
   </div>
 </div>
 
@@ -598,7 +601,7 @@ footer a { color: var(--ink-soft); }
       </div>
       <div>
         <p class="body-text" data-editable="">The first documentary to capture pioneering longevity experiments from the inside. We are combining rare scientific access with an artistic vision that transforms biology into a cinematic experience.</p>
-        <p class="body-text" style="margin-top: 1em;" data-editable="">For centuries, aging and death were seen as inevitable; today, science is turning the human body into an experimental field — where genes are edited, organs replaced, and biological processes reprogrammed.</p>
+        <p class="body-text" style="margin-top: 1em;" data-editable="">The aesthetic oscillates between luminescent cellular forms, the rhythms of ageless creatures, and the precision of human biotechnology.</p>
       </div>
     </div>
 
@@ -607,19 +610,19 @@ footer a { color: var(--ink-soft); }
         <div class="approach-bg" style="background-image: url('img/23.jpg');"></div>
         <div class="approach-num" data-editable="">01</div>
         <h3 class="approach-title"><span data-editable="">Real-Time</span> <em data-editable="">experiments</em></h3>
-        <p class="approach-desc" data-editable="">Groundbreaking science captured as it unfolds — from cryopreservation and genome editing to omics-driven biology. Many experiments filmed for the first time. Science as high-stakes action.</p>
+        <p class="approach-desc" data-editable="">Groundbreaking science filmed as it unfolds — cryopreservation, parabiosis, genome editing — captured on camera for the first time. No reconstructions. Science as high-stakes action.</p>
       </div>
       <div class="approach-item">
         <div class="approach-bg" style="background-image: url('img/01.jpg');"></div>
         <div class="approach-num" data-editable="">02</div>
         <h3 class="approach-title"><span data-editable="">Science</span> <em data-editable="">as art</em></h3>
-        <p class="approach-desc" data-editable="">Fluorescent cells, translucent embryos, and extraordinary non-aging organisms. Biology becomes poetic imagery as the camera captures transformations of living tissue and matter. A meditative visual experience.</p>
+        <p class="approach-desc" data-editable="">Fluorescent cells, translucent embryos, luminescent organisms. Complex biology transformed into poetic imagery — Koyaanisqatsi meets the science of aging. A meditative visual experience.</p>
       </div>
       <div class="approach-item">
         <div class="approach-bg" style="background-image: url('img/09.jpg');"></div>
         <div class="approach-num" data-editable="">03</div>
         <h3 class="approach-title"><span data-editable="">Leading</span> <em data-editable="">scientists</em></h3>
-        <p class="approach-desc" data-editable="">Embedded with researchers at leading universities and pioneering biotech companies, we follow some of the most influential scientists shaping the future of aging research.</p>
+        <p class="approach-desc" data-editable="">Embedded with foremost gerontologists at Stanford, UCSF, and beyond. Access secured over years to labs that have never opened their doors to a film crew.</p>
       </div>
     </div>
 
@@ -631,7 +634,7 @@ footer a { color: var(--ink-soft); }
   <div class="wrap">
     <div class="reveal" style="max-width:760px;">
       <div class="section-label" data-editable="">Team</div>
-      <h2 class="display h2" data-editable="">Outstanding<br>Filmmakers &amp; Biologists</h2>
+      <h2 class="display h2" data-editable="">Outstanding Filmmakers &amp; Biologists</h2>
     </div>
 
     <div class="team-carousel-wrap reveal">
@@ -642,15 +645,15 @@ footer a { color: var(--ink-soft); }
           <div class="team-role" data-editable="">Directors</div>
           <h3 class="team-name" data-editable="">Anastasia Shubina &amp; Tim Glinin</h3>
           <div class="team-bio">
-            <p data-editable="">Award-winning duo based in San Francisco, films screened at 70+ international festivals, 20+ awards. Both have backgrounds in biology — Tim holds a PhD and is a biologist at UCSF. Their work bridges documentary cinema and contemporary science.</p>
+            <p data-editable="">Award-winning duo based in San Francisco. Tim holds a PhD in Genetics; Anastasia holds Master's in Biology and Philosophy. They work at the intersection of documentary film and contemporary science.</p>
           </div>
           <button class="team-details-toggle" onclick="toggleDetails(this)">
             <span>Filmography</span> <span class="arrow">&#9660;</span>
           </button>
           <div class="team-details-content">
             <div class="team-details-inner team-bio">
-              <p>100+ film festivals and exhibitions: Films screened at Sheffield DocFest, Cin&eacute;ma du R&eacute;el (Special Prize), and Trento (Special Mention); works exhibited at Centre Pompidou, Mus&eacute;e du Quai Branly, and the McCord Stewart Museum.</p>
-              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">Haqiqa (2026, WIP) &middot; Piblokto (2023) &middot; The Art of Falling Apart (2019)</p>
+              <p>100+ exhibitions: Centre Pompidou, Mus&eacute;e du Quai Branly, McCord Stewart Museum. Films at Sheffield DocFest, Cin&eacute;ma du R&eacute;el (Special Prize), Trento (Special Mention).</p>
+              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">Haqiqa (2026, WIP) &middot; Piblokto (2023, 19 awards) &middot; The Art of Falling Apart (2019)</p>
             </div>
           </div>
         </div>
@@ -660,58 +663,49 @@ footer a { color: var(--ink-soft); }
           <div class="team-role" data-editable="">Producer</div>
           <h3 class="team-name" data-editable="">Ksenia Gapchenko</h3>
           <div class="team-bio">
-            <p data-editable="">Award-winning producer and member of the European Film Academy, with over a decade of experience in impactful documentary storytelling. Her films have screened at major international festivals, including Cannes.</p>
+            <p data-editable="">Berlin-based producer, European Film Academy member. Nipkow Workshop fellow (2022/23). Over a decade of experience in impactful documentary storytelling.</p>
           </div>
           <button class="team-details-toggle" onclick="toggleDetails(this)">
             <span>Filmography</span> <span class="arrow">&#9660;</span>
           </button>
           <div class="team-details-content">
             <div class="team-details-inner team-bio">
-              <p><em>How to Save a Dead Friend</em> (2022) — Cannes L'ACID, DOC NYC Grand Prix, Visions du R&eacute;el (Special Prize), European Film Awards nomination. Alumna of Eurodoc, Ex Oriente, and IDFA Forum.</p>
-              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">AMOOSED: A Moose Odyssey (2025) &middot; How to Save a Dead Friend (2022) &middot; Not my circus (2025)</p>
+              <p><em>How to Save a Dead Friend</em> (2022) — Cannes L'ACID, DOC NYC Grand Prix, EFA Nomination. Eurodoc, Ex Oriente, IDFA Forum.</p>
+              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">AMOOSED: A Moose Odyssey (2025) &middot; How to Save a Dead Friend (2022)</p>
             </div>
           </div>
         </div>
 
         <div class="team-slide">
           <div class="team-photo" style="background: var(--bg-card);">
-            <img src="img/18.jpg" alt="Mikhail Batin">
+            <img src="img/batin.jpg" alt="Michael Batin" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
           </div>
-          <div class="team-role" data-editable="">Co-producer (Open Longevity)</div>
-          <h3 class="team-name" data-editable="">Mikhail Batin</h3>
+          <div class="team-role" data-editable="">Scientific Advisor</div>
+          <h3 class="team-name" data-editable="">Michael Batin</h3>
           <div class="team-bio">
-            <p data-editable="">President of Open Longevity, a California-based research nonprofit; philosopher and longevity activist. An influential figure in the longevity community, bridging scientific research and public engagement through socially impactful projects.</p>
+            <p data-editable="">President of Open Longevity, a California-based research nonprofit. A key figure in the longevity community, bridging scientific research and public engagement through open clinical trials.</p>
           </div>
         </div>
 
         <div class="team-slide">
           <div class="team-photo" style="background: var(--bg-card);">
-            <img src="img/harrison-wong.jpg" alt="Harrison Wong">
+            <img src="img/wong.jpg" alt="Harrison Wong" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
           </div>
           <div class="team-role" data-editable="">Director of Photography</div>
           <h3 class="team-name" data-editable="">Harrison Wong</h3>
           <div class="team-bio">
-            <p data-editable="">Experienced LA-based cinematographer whose work includes Amazon Prime's Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Meta. Mentored by acclaimed cinematographer Robert McLachlan, ASC (Game of Thrones).</p>
-          </div>
-          <button class="team-details-toggle" onclick="toggleDetails(this)">
-            <span>Filmography</span> <span class="arrow">&#9660;</span>
-          </button>
-          <div class="team-details-content">
-            <div class="team-details-inner team-bio">
-              <p>Selected credits include Amazon Prime's flagship live production Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Treeway (WIP), directed by Milky Tran.</p>
-              <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">Thursday Night Football (2026) &middot; Bong Voyage (2026)</p>
-            </div>
+            <p data-editable="">USA-based cinematographer whose credits include Amazon Prime's Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Meta. Mentored by acclaimed cinematographer Robert McLachlan.</p>
           </div>
         </div>
 
         <div class="team-slide">
           <div class="team-photo" style="background: var(--bg-card);">
-            <a href="img/JS_.jpg" target="_blank"><img src="img/JS_ph.jpg" alt="Julia Shaykhutdinova"></a>
+            <img src="img/shaykhutdinova.jpg" alt="Julia Shaykhutdinova" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-mute);font-size:14px;letter-spacing:0.1em;text-transform:uppercase;\'>Photo</div>'">
           </div>
           <div class="team-role" data-editable="">Public Outreach</div>
           <h3 class="team-name" data-editable="">Julia Shaykhutdinova</h3>
           <div class="team-bio">
-            <p data-editable="">Award-winning science communicator with a background in STEM. Works with Nobel Prize laureates and leading research institutions, and produces YouTube science videos with millions of views.</p>
+            <p data-editable="">Experienced executive producer specializing in complex documentary productions. Strategic oversight ensuring the film's ambitious vision is realized at the highest level of quality.</p>
           </div>
         </div>
 
@@ -727,7 +721,7 @@ footer a { color: var(--ink-soft); }
 <!-- ═══════════════ FULLBLEED — MOLE RATS ═══════════════ -->
 <div class="fullbleed reveal">
   <img src="img/02.jpg" alt="Naked mole rats under purple light">
-  <div class="fullbleed-caption" data-editable="">Whales, jellyfish, naked mole rats, killifish — natural models of resilience that have already mastered the art of sustained vitality.</div>
+  <div class="fullbleed-caption" data-editable="">Whales, jellyfish, naked mole rats — natural models of resilience that have already mastered the art of sustained vitality.</div>
 </div>
 
 <!-- ═══════════════ 8. IMPACT ═══════════════ -->
@@ -736,14 +730,14 @@ footer a { color: var(--ink-soft); }
     <div class="impact-grid reveal">
       <div>
         <div class="section-label" data-editable="">Our Mission</div>
-        <h2 class="display h2" data-editable="">Redefine aging research<br>for society</h2>
+        <h2 class="display h2" data-editable="">Redefine aging for society</h2>
         <div class="body-text">
-          <p data-editable="">We believe the science of longevity is one of the defining stories of our time — yet it remains largely invisible to the public. Our mission is to bring this field out of the laboratory and into culture: to spark an honest, informed conversation about what it means to extend human life, and who gets access to these technologies.</p>
+          <p data-editable="">We believe the science of longevity is one of the defining stories of our time — yet it remains largely invisible to the public. Our mission is to bring this field out of the laboratory: to spark an honest, informed conversation. What does it mean to extend human life? Who gets access to these technologies?</p>
           <p data-editable="">Through art, science, and storytelling, <em>Longevity</em> aims to become a bridge between researchers and the public — making the complexity of aging science accessible without simplifying it, and raising the ethical and political questions that this revolution demands.</p>
         </div>
       </div>
       <div class="impact-image">
-        <img src="img/09r.jpg" alt="Longevity research">
+        <img src="img/red-molerat.jpg" alt="Longevity research">
       </div>
     </div>
   </div>
@@ -751,8 +745,8 @@ footer a { color: var(--ink-soft); }
 
 <!-- ═══════════════ FULLBLEED — CRYOPRESERVATION ═══════════════ -->
 <div class="fullbleed reveal">
-  <img src="img/09k.jpg" alt="Organ cryopreservation in laboratory">
-  <div class="fullbleed-caption" data-editable="">A kidney frozen to ultra-low temperatures, rewarmed without damage, transplanted into a living organism — and brought back to life.</div>
+  <img src="img/09.jpg" alt="Organ cryopreservation in laboratory">
+  <div class="fullbleed-caption" data-editable="">"A kidney loses color, becomes translucent, suspended between states neither alive nor dead. Then it is transplanted back, regains color, fills with blood, and returns to life."</div>
 </div>
 
 <!-- ═══════════════ 11. CONNECT (merged) ═══════════════ -->
@@ -763,29 +757,29 @@ footer a { color: var(--ink-soft); }
       <h2 class="display h2" data-editable="">Stay connected<br>Become part of the story</h2>
       <p class="body-text" data-editable="">Reach out for press inquiries, screening requests, or collaboration opportunities. We are seeking scientists, research institutions, and sponsors who share our vision.</p>
       <p class="body-text" style="margin-top: 20px;">
-        <strong style="color: var(--ink);">Email · </strong><a href="mailto:longevity.documentary@gmail.com">longevity.documentary@gmail.com</a><br>
+        <strong style="color: var(--ink);">Email · </strong><a href="mailto:hello@longevity-film.com" data-editable="" data-editable-attr="href">hello@longevity-film.com</a><br>
+        <strong style="color: var(--ink);">Production · </strong><span data-editable="">Singularity Films, Foster City, California</span>
       </p>
     </div>
 
     <div class="connect-forms reveal">
       <div class="form-card">
-        <h3 data-editable="">Join the Film</h3>
-        <p class="form-subtitle" data-editable="">Working in aging, longevity, or regenerative medicine?</p>
-        <p class="form-subtitle form-cta-line" data-editable="">Share your work — and become part of the film.</p>
-        <form class="cta-form" onsubmit="event.preventDefault(); submitToEmail(this, 'Researcher Application');">
+        <h3 data-editable="">For Researchers</h3>
+        <p class="form-subtitle" data-editable="">Working in aging, longevity, or regenerative medicine? Share your work, open your lab, and help bring this science to a wider audience.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); alert('Thank you for your interest! We will be in touch shortly.'); this.reset();">
           <div class="field"><label>Full Name</label><input type="text" required=""></div>
           <div class="field"><label>Email</label><input type="email" required=""></div>
-          <div class="field"><label>Affiliation</label><input type="text" required=""></div>
-          <div class="field"><label>Tell Us About Your Work</label><textarea rows="2"></textarea></div>
+          <div class="field"><label>Institution / Lab</label><input type="text" required=""></div>
+          <div class="field"><label>Area of Research</label><input type="text" placeholder="e.g. gerontology, regenerative medicine..."></div>
           <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
-          <button class="btn" type="submit" data-editable="">Join</button>
+          <button class="btn" type="submit" data-editable="">Apply as Researcher</button>
         </form>
       </div>
 
       <div class="form-card">
-        <h3 data-editable="">Support Our Work</h3>
-        <p class="form-subtitle" data-editable="">Opportunities for individuals, foundations, and organizations.</p>
-        <form class="cta-form" onsubmit="event.preventDefault(); submitToEmail(this, 'Support Inquiry');">
+        <h3 data-editable="">For Sponsors</h3>
+        <p class="form-subtitle" data-editable="">Support a documentary that brings longevity science to global audiences. Opportunities for individuals, foundations, and organizations.</p>
+        <form class="cta-form" onsubmit="event.preventDefault(); alert('Thank you for your interest in sponsoring Longevity! We will be in touch shortly.'); this.reset();">
           <div class="field"><label>Full Name</label><input type="text" required=""></div>
           <div class="field"><label>Email</label><input type="email" required=""></div>
           <div class="field"><label>Organization (optional)</label><input type="text"></div>
@@ -800,7 +794,7 @@ footer a { color: var(--ink-soft); }
             </select>
           </div>
           <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
-          <button class="btn" type="submit" data-editable="">Get Involved</button>
+          <button class="btn" type="submit" data-editable="">Become a Sponsor</button>
         </form>
       </div>
     </div>
@@ -814,7 +808,7 @@ footer a { color: var(--ink-soft); }
     <div class="reveal" style="text-align: center; max-width: 760px; margin: 0 auto;">
       <div class="section-label" style="display:inline-flex; justify-content:center;" data-editable="">Production &amp; Support</div>
       <h2 class="display h2" data-editable="">Produced by Singularity</h2>
-      <p class="body-text" style="margin: 0 auto;" data-editable="">A California-based production company specializing in films about science, anthropology, and ethnographic projects. Based in Foster City, CA.</p>
+      <p class="body-text" style="margin: 0 auto;" data-editable="">A young California-based production company specializing in films about science, anthropology, and ethnographic projects. Based in Foster City, CA.</p>
     </div>
     <div class="partners-grid reveal">
       <div class="partner">
@@ -841,29 +835,22 @@ footer a { color: var(--ink-soft); }
   <div>
     <div class="foot-title" data-editable="">Follow</div>
     <div>
-      <!-- FOOTER LINK — Replace '#' with your Instagram URL -->
-      <a href="#">Instagram</a> · 
-      <!-- FOOTER LINK — Replace '#' with your Vimeo URL -->
-      <a href="#">Vimeo</a> · 
-      <!-- FOOTER LINK — Replace '#' with your Letterboxd URL -->
-      <a href="#">Letterboxd</a>
+      <a href="#" data-editable="" data-editable-attr="href">Instagram</a> · 
+      <a href="#" data-editable="" data-editable-attr="href">Vimeo</a> · 
+      <a href="#" data-editable="" data-editable-attr="href">Letterboxd</a>
     </div>
   </div>
   <div>
     <div class="foot-title" data-editable="">Press kit</div>
-    <!-- FOOTER LINK — Replace '#' with your Press Kit PDF URL -->
-    <div><a href="https://drive.google.com/file/d/1gRiDK6_PBNBt02pTmlb8DzHcWdO3H1Sa/view">Download PDF (10 pages)</a></div>
+    <div><a href="#" data-editable="" data-editable-attr="href">Download PDF (10 pages)</a></div>
   </div>
 </footer>
 
-<!-- DONATE FLOATING BUTTON — Replace '#' href with your PayPal donation URL -->
-<div class="donate-float">
-  <a href="https://www.paypal.com/donate/?hosted_button_id=MDVAM4PR67ZQ2" title="Donate via PayPal">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    Donate
-  </a>
+<!-- EDIT MODE FAB -->
+<div class="edit-fab" id="editFab">
+  <button id="editToggle" class="">&#9998; <span>Edit content</span></button>
+  <button id="exitBtn" class="hidden"><span>Done</span></button>
 </div>
-
 
 <script>
 (function() {
@@ -899,21 +886,25 @@ function scrollCarousel(dir) {
   c.scrollBy({ left: dir * w, behavior: 'smooth' });
 }
 
-function submitToEmail(form, subject) {
-  const fields = form.querySelectorAll('input, textarea, select');
-  let body = '';
-  fields.forEach(function(f) {
-    const label = f.closest('.field')?.querySelector('label')?.textContent || '';
-    if (label && f.value) body += label + ': ' + f.value + '\n';
+(function() {
+  const toggle = document.getElementById('editToggle');
+  const exitBtn = document.getElementById('exitBtn');
+  let editing = false;
+  function setEditing(on) {
+    editing = on;
+    document.body.classList.toggle('editing', on);
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.contentEditable = on ? 'true' : 'false'; el.spellcheck = on;
+    });
+    toggle.classList.toggle('hidden', on);
+    exitBtn.classList.toggle('hidden', !on);
+  }
+  toggle.addEventListener('click', () => setEditing(true));
+  exitBtn.addEventListener('click', () => setEditing(false));
+  window.addEventListener('keydown', (e) => {
+    if (editing && e.key === 'Escape') setEditing(false);
   });
-  const mailto = 'mailto:longevity.documentary@gmail.com'
-    + '?subject=' + encodeURIComponent('Longevity Film — ' + subject)
-    + '&body=' + encodeURIComponent(body);
-  window.open(mailto, '_blank');
-  alert('Thank you for your interest! Your email client should open shortly.');
-  form.reset();
-}
-
+})();
 </script>
 
 </body></html>
