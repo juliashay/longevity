@@ -260,7 +260,7 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 .approach-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 0; border: 1px solid var(--line);
-  margin-bottom: clamp(60px, 8vh, 100px);
+  margin-bottom: 0;
 }
 .approach-item {
   padding: clamp(28px, 3vw, 44px);
@@ -341,10 +341,10 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 }
 .team-slide .team-photo img {
   width: 100%; height: 100%; object-fit: cover;
-  transition: transform 1.2s ease, filter .6s; filter: grayscale(0.15);
+  transition: transform 1.2s ease, filter .6s; filter: grayscale(1);
 }
 .team-slide .team-photo a { display: block; width: 100%; height: 100%; }
-.team-slide:hover .team-photo img { transform: scale(1.04); filter: grayscale(0); }
+.team-slide:hover .team-photo img { transform: scale(1.04); filter: grayscale(1); }
 .team-role {
   font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
   color: var(--accent); font-weight: 600; margin-bottom: 6px;
@@ -409,14 +409,15 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 .connect-section { background: #0d0d11; border-top: 1px solid var(--line); }
 .connect-forms {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
+  column-gap: clamp(24px, 4vw, 48px); row-gap: 0;
   margin-top: clamp(40px, 6vh, 64px);
 }
-@media (max-width: 800px) { .connect-forms { grid-template-columns: 1fr; } }
+@media (max-width: 800px) { .connect-forms { grid-template-columns: 1fr; row-gap: clamp(24px, 4vw, 48px); } }
 
 .form-card {
   border: 1px solid var(--line); padding: clamp(28px, 3vw, 44px);
   background: var(--bg-card); position: relative; overflow: hidden;
+  display: grid; grid-template-rows: subgrid; grid-row: span 2;
 }
 .form-card::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -435,12 +436,15 @@ section { padding: clamp(80px, 12vh, 160px) 0; position: relative; }
 }
 
 form.cta-form { display: flex; flex-direction: column; gap: 14px; }
+form.cta-form .btn { margin-top: auto; }
+.form-card-head { margin-bottom: 0; }
 .field { position: relative; border-bottom: 1px solid var(--line-strong); padding-bottom: 4px; }
 .field input, .field textarea, .field select {
   width: 100%; background: transparent; border: none; outline: none;
-  color: var(--ink); font-family: inherit; font-size: 15px; padding: 12px 0; resize: vertical;
+  color: #fff; font-family: inherit; font-size: 15px; padding: 12px 0; resize: vertical;
 }
-.field select { -webkit-appearance: none; appearance: none; cursor: pointer; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.4); }
+.field select { -webkit-appearance: none; appearance: none; cursor: pointer; color: #fff; }
 .field select option { background: var(--bg-card); color: var(--ink); }
 .field label {
   display: block; font-size: 10px; letter-spacing: 0.22em;
@@ -491,6 +495,7 @@ footer a { color: var(--ink-soft); }
 /* FLOATING DONATE BUTTON — bottom-left, Replace '#' href with PayPal URL */
 .donate-float {
   position: fixed; bottom: 24px; right: 24px; z-index: 190;
+  transition: transform 0.3s ease;
 }
 .donate-float a {
   display: inline-flex; align-items: center; gap: 8px;
@@ -503,6 +508,54 @@ footer a { color: var(--ink-soft); }
 }
 .donate-float a:hover { background: #fff; color: #0a0a0c; box-shadow: 0 4px 40px var(--accent-glow); }
 .donate-float a svg { flex-shrink: 0; }
+
+/* NEWSLETTER POPUP */
+.nl-popup-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(10,10,12,0.7); backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+}
+.nl-popup-overlay.visible { opacity: 1; visibility: visible; }
+.nl-popup {
+  position: relative; width: 90%; max-width: 460px;
+  background: var(--bg-card); border: 1px solid var(--line);
+  padding: clamp(32px, 4vw, 48px); text-align: center;
+}
+.nl-popup::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.nl-popup-close {
+  position: absolute; top: 16px; right: 16px; background: none; border: none;
+  color: var(--ink-mute); font-size: 22px; cursor: pointer; line-height: 1;
+  transition: color .3s; font-family: inherit;
+}
+.nl-popup-close:hover { color: var(--ink); }
+.nl-popup h3 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800; font-size: clamp(24px, 3vw, 34px);
+  text-transform: uppercase; margin: 0 0 8px; line-height: 1; color: var(--ink);
+}
+.nl-popup p {
+  color: var(--ink-soft); font-size: 14px; line-height: 1.55; margin: 0 0 24px;
+}
+.nl-popup .nl-form {
+  display: flex; gap: 0; max-width: 360px; margin: 0 auto;
+}
+.nl-popup .nl-form input {
+  flex: 1; min-width: 0; background: transparent;
+  border: 1px solid var(--line-strong); border-right: none;
+  padding: 14px 16px; color: #fff; font-family: inherit; font-size: 14px; outline: none;
+}
+.nl-popup .nl-form input:focus { border-color: var(--accent); }
+.nl-popup .nl-form button {
+  padding: 14px 22px; background: var(--accent); color: #0a0a0c; border: none;
+  font-family: inherit; font-weight: 700; font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; cursor: pointer; transition: all .3s; white-space: nowrap;
+}
+.nl-popup .nl-form button:hover { background: #fff; }
 
 /* REVEAL */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s, transform 1s; }
@@ -535,7 +588,7 @@ footer a { color: var(--ink-soft); }
       <p class="hero-tagline" data-editable="">When science challenges death, what happens to life?</p>
       <div class="hero-meta">
         <span data-editable="">Documentary Feature · 90 Min</span>
-        <span data-editable="">In Development · USA 2027</span>
+        <span data-editable="">In Production · USA 2027</span>
       </div>
     </div>
     <a class="hero-cta" href="#teaser" data-editable-attr="href">
@@ -631,7 +684,7 @@ footer a { color: var(--ink-soft); }
   <div class="wrap">
     <div class="reveal" style="max-width:760px;">
       <div class="section-label" data-editable="">Team</div>
-      <h2 class="display h2" data-editable="">Outstanding<br>Filmmakers &amp; Biologists</h2>
+      <h2 class="display h2" data-editable="">Filmmakers<br>&amp;Biologists</h2>
     </div>
 
     <div class="team-carousel-wrap reveal">
@@ -644,15 +697,34 @@ footer a { color: var(--ink-soft); }
           <div class="team-bio">
             <p data-editable="">Award-winning duo based in San Francisco, films screened at 70+ international festivals, 20+ awards. Both have backgrounds in biology — Tim holds a PhD and is a biologist at UCSF. Their work bridges documentary cinema and contemporary science.</p>
           </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button class="team-details-toggle" onclick="toggleDetails(this)">
             <span>Filmography</span> <span class="arrow">&#9660;</span>
           </button>
+          <a class="team-details-toggle" href="https://glish.org/about" target="_blank" style="text-decoration:none;">
+            <span>Website</span> <span class="arrow" style="transform:rotate(-90deg);">&#9660;</span>
+          </a>
+          </div>
           <div class="team-details-content">
             <div class="team-details-inner team-bio">
               <p>100+ film festivals and exhibitions: Films screened at Sheffield DocFest, Cin&eacute;ma du R&eacute;el (Special Prize), and Trento (Special Mention); works exhibited at Centre Pompidou, Mus&eacute;e du Quai Branly, and the McCord Stewart Museum.</p>
               <p style="margin-top:8px; font-size:13px; color:var(--ink-mute);">Haqiqa (2026, WIP) &middot; Piblokto (2023) &middot; The Art of Falling Apart (2019)</p>
             </div>
           </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-photo" style="background: var(--bg-card);">
+            <img src="img/18.jpg" alt="Mikhail Batin">
+          </div>
+          <div class="team-role" data-editable="">Co-producer (Open Longevity)</div>
+          <h3 class="team-name" data-editable="">Mikhail Batin</h3>
+          <div class="team-bio">
+            <p data-editable="">President of Open Longevity, a California-based research nonprofit; philosopher and longevity activist. An influential figure in the longevity community, bridging scientific research and public engagement through socially impactful projects.</p>
+          </div>
+          <a class="team-details-toggle" href="https://openlongevity.org/" target="_blank" style="text-decoration:none;">
+            <span>Website</span> <span class="arrow" style="transform:rotate(-90deg);">&#9660;</span>
+          </a>
         </div>
 
         <div class="team-slide">
@@ -675,17 +747,6 @@ footer a { color: var(--ink-soft); }
 
         <div class="team-slide">
           <div class="team-photo" style="background: var(--bg-card);">
-            <img src="img/18.jpg" alt="Mikhail Batin">
-          </div>
-          <div class="team-role" data-editable="">Co-producer (Open Longevity)</div>
-          <h3 class="team-name" data-editable="">Mikhail Batin</h3>
-          <div class="team-bio">
-            <p data-editable="">President of Open Longevity, a California-based research nonprofit; philosopher and longevity activist. An influential figure in the longevity community, bridging scientific research and public engagement through socially impactful projects.</p>
-          </div>
-        </div>
-
-        <div class="team-slide">
-          <div class="team-photo" style="background: var(--bg-card);">
             <img src="img/harrison-wong.jpg" alt="Harrison Wong">
           </div>
           <div class="team-role" data-editable="">Director of Photography</div>
@@ -693,9 +754,14 @@ footer a { color: var(--ink-soft); }
           <div class="team-bio">
             <p data-editable="">Experienced LA-based cinematographer whose work includes Amazon Prime's Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Meta. Mentored by acclaimed cinematographer Robert McLachlan, ASC (Game of Thrones).</p>
           </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button class="team-details-toggle" onclick="toggleDetails(this)">
             <span>Filmography</span> <span class="arrow">&#9660;</span>
           </button>
+          <a class="team-details-toggle" href="https://www.harrisonwongdp.com/" target="_blank" style="text-decoration:none;">
+            <span>Website</span> <span class="arrow" style="transform:rotate(-90deg);">&#9660;</span>
+          </a>
+          </div>
           <div class="team-details-content">
             <div class="team-details-inner team-bio">
               <p>Selected credits include Amazon Prime's flagship live production Thursday Night Football, Bong Voyage with Jimmy Kimmel, and Treeway (WIP), directed by Milky Tran.</p>
@@ -726,7 +792,7 @@ footer a { color: var(--ink-soft); }
 
 <!-- ═══════════════ FULLBLEED — MOLE RATS ═══════════════ -->
 <div class="fullbleed reveal">
-  <img src="img/02.jpg" alt="Naked mole rats under purple light">
+  <img src="img/02.jpg" alt="Naked mole rats under purple light" style="transform: scaleX(1);">
   <div class="fullbleed-caption" data-editable="">Whales, jellyfish, naked mole rats, killifish — natural models of resilience that have already mastered the art of sustained vitality.</div>
 </div>
 
@@ -736,10 +802,10 @@ footer a { color: var(--ink-soft); }
     <div class="impact-grid reveal">
       <div>
         <div class="section-label" data-editable="">Our Mission</div>
-        <h2 class="display h2" data-editable="">Redefine aging research<br>for society</h2>
+        <h2 class="display h2" data-editable="">Redefining aging research<br>for society</h2>
         <div class="body-text">
-          <p data-editable="">We believe the science of longevity is one of the defining stories of our time — yet it remains largely invisible to the public. Our mission is to bring this field out of the laboratory and into culture: to spark an honest, informed conversation about what it means to extend human life, and who gets access to these technologies.</p>
-          <p data-editable="">Through art, science, and storytelling, <em>Longevity</em> aims to become a bridge between researchers and the public — making the complexity of aging science accessible without simplifying it, and raising the ethical and political questions that this revolution demands.</p>
+          <p data-editable="">We believe the science of longevity is one of the defining stories of our time — yet it remains largely invisible to the public. Our mission is to bring this field out of the laboratory and into culture: to spark an honest, informed conversation about what it means to extend human life, and how it may transform society.</p>
+          <p data-editable="">Through art, science, and storytelling, <em>Longevity</em> aims to become a bridge between researchers and the public — making the complexity of aging science accessible without simplifying it, and raising the ethical and philosophical questions this revolution demands.</p>
         </div>
       </div>
       <div class="impact-image">
@@ -752,7 +818,7 @@ footer a { color: var(--ink-soft); }
 <!-- ═══════════════ FULLBLEED — CRYOPRESERVATION ═══════════════ -->
 <div class="fullbleed reveal">
   <img src="img/09k.jpg" alt="Organ cryopreservation in laboratory">
-  <div class="fullbleed-caption" data-editable="">A kidney frozen to ultra-low temperatures, rewarmed without damage, transplanted into a living organism — and brought back to life.</div>
+  <div class="fullbleed-caption" data-editable="">A kidney frozen to ultra-low temperatures, rewarmed without damage, transplanted into a living organism — and <span style="white-space:nowrap;">brought back to life.</span></div>
 </div>
 
 <!-- ═══════════════ 11. CONNECT (merged) ═══════════════ -->
@@ -769,29 +835,35 @@ footer a { color: var(--ink-soft); }
 
     <div class="connect-forms reveal">
       <div class="form-card">
-        <h3 data-editable="">Join the Film</h3>
-        <p class="form-subtitle" data-editable="">Working in aging, longevity, or regenerative medicine?</p>
-        <p class="form-subtitle form-cta-line" data-editable="">Share your work — and become part of the film.</p>
-        <form class="cta-form" onsubmit="event.preventDefault(); submitToEmail(this, 'Researcher Application');">
-          <div class="field"><label>Full Name</label><input type="text" required=""></div>
-          <div class="field"><label>Email</label><input type="email" required=""></div>
-          <div class="field"><label>Affiliation</label><input type="text" required=""></div>
-          <div class="field"><label>Tell Us About Your Work</label><textarea rows="2"></textarea></div>
-          <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
+        <div class="form-card-head">
+          <h3 data-editable="">Join the Film</h3>
+          <p class="form-subtitle" data-editable="">Working in aging, longevity, or regenerative medicine?</p>
+          <p class="form-subtitle form-cta-line" data-editable="">Share your work — and become part of the documentary.</p>
+        </div>
+        <form class="cta-form" onsubmit="event.preventDefault(); submitToFormspree(this, 'Researcher Application');">
+          <input type="hidden" name="_subject" value="Longevity Film — Researcher Application">
+          <div class="field"><label>Full Name</label><input type="text" name="name" required=""></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required=""></div>
+          <div class="field"><label>Affiliation</label><input type="text" name="affiliation" required=""></div>
+          <div class="field"><label>Tell Us About Your Work</label><textarea name="work" rows="2"></textarea></div>
+          <div class="field"><label>Message (optional)</label><textarea name="message" rows="2"></textarea></div>
           <button class="btn" type="submit" data-editable="">Join</button>
         </form>
       </div>
 
       <div class="form-card">
-        <h3 data-editable="">Support Our Work</h3>
-        <p class="form-subtitle" data-editable="">Opportunities for individuals, foundations, and organizations.</p>
-        <form class="cta-form" onsubmit="event.preventDefault(); submitToEmail(this, 'Support Inquiry');">
-          <div class="field"><label>Full Name</label><input type="text" required=""></div>
-          <div class="field"><label>Email</label><input type="email" required=""></div>
-          <div class="field"><label>Organization (optional)</label><input type="text"></div>
+        <div class="form-card-head">
+          <h3 data-editable="">Support Our Work</h3>
+          <p class="form-subtitle" data-editable="">Opportunities for individuals, foundations, and organizations.<br>Help bring longevity science to the public.</p>
+        </div>
+        <form class="cta-form" onsubmit="event.preventDefault(); submitToFormspree(this, 'Support Inquiry');">
+          <input type="hidden" name="_subject" value="Longevity Film — Support Inquiry">
+          <div class="field"><label>Full Name</label><input type="text" name="name" required=""></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required=""></div>
+          <div class="field"><label>Organization (optional)</label><input type="text" name="organization"></div>
           <div class="field">
             <label>Type of Support</label>
-            <select>
+            <select name="support_type">
               <option value="">Select...</option>
               <option value="financial">Financial sponsorship</option>
               <option value="in-kind">In-kind support</option>
@@ -799,7 +871,7 @@ footer a { color: var(--ink-soft); }
               <option value="other">Other</option>
             </select>
           </div>
-          <div class="field"><label>Message (optional)</label><textarea rows="2"></textarea></div>
+          <div class="field"><label>Message (optional)</label><textarea name="message" rows="2"></textarea></div>
           <button class="btn" type="submit" data-editable="">Get Involved</button>
         </form>
       </div>
@@ -818,15 +890,15 @@ footer a { color: var(--ink-soft); }
     </div>
     <div class="partners-grid reveal">
       <div class="partner">
-        <div class="partner-name" data-editable="">Singularity</div>
+        <div class="partner-name"><a href="https://singularityfilm.org/" target="_blank" data-editable="">Singularity</a></div>
         <div class="partner-desc" data-editable="">Production company · Foster City, CA</div>
       </div>
       <div class="partner">
-        <div class="partner-name" data-editable="">Open Longevity</div>
+        <div class="partner-name"><a href="https://openlongevity.org/" target="_blank" data-editable="">Open Longevity</a></div>
         <div class="partner-desc" data-editable="">Research nonprofit · California</div>
       </div>
       <div class="partner">
-        <div class="partner-name" data-editable="">BAVC Media</div>
+        <div class="partner-name"><a href="https://www.bavc.org/" target="_blank" data-editable="">BAVC Media</a></div>
         <div class="partner-desc" data-editable="">Bay Area Video Coalition</div>
       </div>
     </div>
@@ -841,20 +913,29 @@ footer a { color: var(--ink-soft); }
   <div>
     <div class="foot-title" data-editable="">Follow</div>
     <div>
-      <!-- FOOTER LINK — Replace '#' with your Instagram URL -->
-      <a href="#">Instagram</a> · 
-      <!-- FOOTER LINK — Replace '#' with your Vimeo URL -->
-      <a href="#">Vimeo</a> · 
-      <!-- FOOTER LINK — Replace '#' with your Letterboxd URL -->
-      <a href="#">Letterboxd</a>
+      <a href="https://www.instagram.com/longevity.film" target="_blank">Instagram</a> · 
+      <a href="https://vimeo.com/user258602991" target="_blank">Vimeo</a>
     </div>
   </div>
   <div>
     <div class="foot-title" data-editable="">Press kit</div>
-    <!-- FOOTER LINK — Replace '#' with your Press Kit PDF URL -->
     <div><a href="https://drive.google.com/file/d/1gRiDK6_PBNBt02pTmlb8DzHcWdO3H1Sa/view">Download PDF (10 pages)</a></div>
   </div>
 </footer>
+
+<!-- NEWSLETTER POPUP -->
+<div class="nl-popup-overlay" id="nlPopup">
+  <div class="nl-popup">
+    <button class="nl-popup-close" onclick="closeNewsletter()" aria-label="Close">&times;</button>
+    <h3>The Film Is Coming</h3>
+    <p>Stay in tune with us — sign up for updates on screenings, releases, and behind-the-scenes stories.</p>
+    <div class="nl-form" id="newsletterForm">
+      <input type="email" placeholder="Your email address" required>
+      <button onclick="subscribeNewsletter()">Sign Up</button>
+    </div>
+    <div id="newsletterThankYou" style="display:none; padding:14px; font-size:14px; color:var(--accent); letter-spacing:0.04em;">Thank you! We'll keep you posted.</div>
+  </div>
+</div>
 
 <!-- DONATE FLOATING BUTTON — Replace '#' href with your PayPal donation URL -->
 <div class="donate-float">
@@ -874,6 +955,30 @@ footer a { color: var(--ink-soft); }
 })();
 
 (function() {
+  var donateBtn = document.querySelector('.donate-float');
+  var footer = document.querySelector('footer');
+  if (!donateBtn || !footer) return;
+  function adjustDonate() {
+    var footerRect = footer.getBoundingClientRect();
+    var viewH = window.innerHeight;
+    var overlap = viewH - footerRect.top;
+    if (overlap > 0) {
+      var footerMid = footer.offsetTop + (footer.offsetHeight / 2) - (donateBtn.offsetHeight / 2);
+      donateBtn.style.position = 'absolute';
+      donateBtn.style.bottom = 'auto';
+      donateBtn.style.top = footerMid + 'px';
+    } else {
+      donateBtn.style.position = 'fixed';
+      donateBtn.style.top = 'auto';
+      donateBtn.style.bottom = '24px';
+    }
+  }
+  window.addEventListener('scroll', adjustDonate, { passive: true });
+  window.addEventListener('resize', adjustDonate, { passive: true });
+  adjustDonate();
+})();
+
+(function() {
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
     return;
@@ -887,7 +992,9 @@ footer a { color: var(--ink-soft); }
 })();
 
 function toggleDetails(btn) {
-  const content = btn.nextElementSibling;
+  var parent = btn.closest('.team-slide');
+  var content = parent.querySelector('.team-details-content');
+  if (!content) return;
   btn.classList.toggle('open');
   content.classList.toggle('open');
 }
@@ -899,20 +1006,90 @@ function scrollCarousel(dir) {
   c.scrollBy({ left: dir * w, behavior: 'smooth' });
 }
 
-function submitToEmail(form, subject) {
-  const fields = form.querySelectorAll('input, textarea, select');
-  let body = '';
-  fields.forEach(function(f) {
-    const label = f.closest('.field')?.querySelector('label')?.textContent || '';
-    if (label && f.value) body += label + ': ' + f.value + '\n';
+function submitToFormspree(form, subject) {
+  var btn = form.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  
+  var data = new FormData(form);
+  
+  fetch('https://formspree.io/f/xnjwrnja', {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).then(function(res) {
+    if (res.ok) {
+      var card = form.closest('.form-card');
+      card.style.minHeight = card.offsetHeight + 'px';
+      form.style.display = 'none';
+      var thankYou = document.createElement('div');
+      thankYou.style.cssText = 'display:flex; align-items:center; justify-content:center; text-align:center; padding:40px 20px; flex:1; min-height:200px;';
+      thankYou.innerHTML = '<p style="font-family:\'Big Shoulders Display\',sans-serif; font-weight:800; font-size:clamp(18px,2vw,24px); text-transform:uppercase; letter-spacing:0.04em; color:var(--ink); line-height:1.3;">Thank you for your interest!<br><span style="font-family:\'Manrope\',sans-serif; font-weight:400; font-size:14px; letter-spacing:0.02em; color:var(--ink-soft); text-transform:none;">We\'ll get back soon.</span></p>';
+      form.parentNode.appendChild(thankYou);
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Try Again';
+    }
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Try Again';
   });
-  const mailto = 'mailto:longevity.documentary@gmail.com'
-    + '?subject=' + encodeURIComponent('Longevity Film — ' + subject)
-    + '&body=' + encodeURIComponent(body);
-  window.open(mailto, '_blank');
-  alert('Thank you for your interest! Your email client should open shortly.');
-  form.reset();
 }
+
+function subscribeNewsletter() {
+  var container = document.getElementById('newsletterForm');
+  var emailInput = container.querySelector('input[type="email"]');
+  if (!emailInput.value || !emailInput.validity.valid) { emailInput.reportValidity(); return; }
+  
+  var btn = container.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = '...';
+  
+  var data = new FormData();
+  data.append('email', emailInput.value);
+  
+  fetch('https://hooks.zapier.com/hooks/catch/27580470/4yg7y9l/', {
+    method: 'POST',
+    body: JSON.stringify({ email: emailInput.value }),
+  }).then(function(res) {
+    if (res.ok) {
+      container.style.display = 'none';
+      document.getElementById('newsletterThankYou').style.display = 'block';
+      sessionStorage.setItem('nl_subscribed', '1');
+      setTimeout(closeNewsletter, 2500);
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Sign Up';
+    }
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Sign Up';
+  });
+}
+
+function closeNewsletter() {
+  document.getElementById('nlPopup').classList.remove('visible');
+  sessionStorage.setItem('nl_dismissed', '1');
+}
+
+(function() {
+  if (sessionStorage.getItem('nl_dismissed') || sessionStorage.getItem('nl_subscribed')) return;
+  var shown = false;
+  var footer = document.querySelector('footer');
+  var io = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !shown) {
+      shown = true;
+      document.getElementById('nlPopup').classList.add('visible');
+      io.disconnect();
+    }
+  }, { threshold: 0.1 });
+  io.observe(footer);
+
+  // Also close on overlay click
+  document.getElementById('nlPopup').addEventListener('click', function(e) {
+    if (e.target === this) closeNewsletter();
+  });
+})();
 
 </script>
 
