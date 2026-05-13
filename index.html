@@ -1047,10 +1047,12 @@ function subscribeNewsletter() {
   
   var data = new FormData();
   data.append('email', emailInput.value);
+  data.append('_subject', 'Longevity Film — Newsletter Signup');
   
-  fetch('https://hooks.zapier.com/hooks/catch/27580470/4yg7y9l/', {
+  fetch('https://formspree.io/f/xnjwrnja', {
     method: 'POST',
-    body: JSON.stringify({ email: emailInput.value }),
+    body: data,
+    headers: { 'Accept': 'application/json' }
   }).then(function(res) {
     if (res.ok) {
       container.style.display = 'none';
