@@ -929,10 +929,11 @@ footer a { color: var(--ink-soft); }
     <button class="nl-popup-close" onclick="closeNewsletter()" aria-label="Close">&times;</button>
     <h3>The Film Is Coming</h3>
     <p>Stay in tune with us — sign up for updates on screenings, releases, and behind-the-scenes stories.</p>
-    <div class="nl-form" id="newsletterForm">
-      <input type="email" placeholder="Your email address" required>
-      <button onclick="subscribeNewsletter()">Sign Up</button>
-    </div>
+    <form class="nl-form" id="newsletterForm" onsubmit="event.preventDefault(); subscribeNewsletter(this);" action="https://formspree.io/f/xnjwrnja" method="POST">
+      <input type="hidden" name="_subject" value="Longevity Film — Newsletter Signup">
+      <input type="email" name="email" placeholder="Your email address" required>
+      <button type="submit">Sign Up</button>
+    </form>
     <div id="newsletterThankYou" style="display:none; padding:14px; font-size:14px; color:var(--accent); letter-spacing:0.04em;">Thank you! We'll keep you posted.</div>
   </div>
 </div>
@@ -1036,36 +1037,30 @@ function submitToFormspree(form, subject) {
   });
 }
 
-function subscribeNewsletter() {
-  var container = document.getElementById('newsletterForm');
-  var emailInput = container.querySelector('input[type="email"]');
-  if (!emailInput.value || !emailInput.validity.valid) { emailInput.reportValidity(); return; }
-  
-  var btn = container.querySelector('button');
+function subscribeNewsletter(form) {
+  var btn = form.querySelector('button[type="submit"]');
   btn.disabled = true;
   btn.textContent = '...';
-  
-  var data = new FormData();
-  data.append('email', emailInput.value);
-  data.append('_subject', 'Longevity Film — Newsletter Signup');
-  
+
+  var data = new FormData(form);
+
   fetch('https://formspree.io/f/xnjwrnja', {
     method: 'POST',
     body: data,
     headers: { 'Accept': 'application/json' }
   }).then(function(res) {
     if (res.ok) {
-      container.style.display = 'none';
+      form.style.display = 'none';
       document.getElementById('newsletterThankYou').style.display = 'block';
       sessionStorage.setItem('nl_subscribed', '1');
       setTimeout(closeNewsletter, 2500);
     } else {
       btn.disabled = false;
-      btn.textContent = 'Sign Up';
+      btn.textContent = 'Try Again';
     }
   }).catch(function() {
     btn.disabled = false;
-    btn.textContent = 'Sign Up';
+    btn.textContent = 'Try Again';
   });
 }
 
